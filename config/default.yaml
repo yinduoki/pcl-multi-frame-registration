@@ -1,0 +1,25 @@
+#体素化参数
+voxel_filter:
+  leaf_size: 0.06
+#；离群点过滤参数:邻居点数量（计算点到k个邻居点的平均距离），标准差倍数（算法根据分布得出平均值和标准差，阈值则是平均值+sd_*标准差，sd越小，被删的点越多）
+outlierfilter:  
+  mean_k: 10 
+  sd: 2.0
+#fpfh粗配准参数:法向量搜索半径,FPFH特征搜索半径（大于法向量半径)
+FPFHReg:
+  normal_radius: 0.2
+  fpfh_radius: 0.5
+
+#icp精配准参数：icp最大迭代次数， ; // icp最大匹配距离；
+ICPReg:
+  icp_max_iter: 50
+  icp_max_dist: 0.2
+  threshold: 0.4
+#原始点云，颜色,蓝
+source_color: [0,0,255]
+#目标点云，颜色,绿
+target_color: [0,255,0]
+#配准后点云，颜色,红
+reg_color: [255,0,0]
+#文件夹路径
+fold_path: /home/hdz/pcl_pipeline/data
