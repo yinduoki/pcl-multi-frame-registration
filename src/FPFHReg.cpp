@@ -61,8 +61,7 @@ Eigen::Matrix4f FPFHReg::CoarseReg(const CloudPtr &source, const CloudPtr &targe
     sca_ia.setSourceFeatures(src_features);
     sca_ia.setInputTarget(target);
     sca_ia.setTargetFeatures(tgt_features);
-    sca_ia.setMaximumIterations(80);          // 随机采样次数
-    sca_ia.setMaxCorrespondenceDistance(1.5); // 距离阈值，变换后小于阈值才算内点
+    sca_ia.setMaximumIterations(100); // 随机采样次数
     sca_ia.align(*front);
     Eigen::Matrix4f front_trans = sca_ia.getFinalTransformation();
     auto front_score = sca_ia.getFitnessScore();
@@ -76,8 +75,7 @@ Eigen::Matrix4f FPFHReg::CoarseReg(const CloudPtr &source, const CloudPtr &targe
         sca_ia.setSourceFeatures(tgt_features);
         sca_ia.setInputTarget(source);
         sca_ia.setTargetFeatures(src_features);
-        sca_ia.setMaximumIterations(80);          // 随机采样次数
-        sca_ia.setMaxCorrespondenceDistance(1.5); // 距离阈值，变换后小于阈值才算内点
+        sca_ia.setMaximumIterations(100); // 随机采样次数
         sca_ia.align(*back);
         back_trans = sca_ia.getFinalTransformation();
         back_score = sca_ia.getFitnessScore();

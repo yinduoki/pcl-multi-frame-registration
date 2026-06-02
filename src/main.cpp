@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
     src_pipeline.addFilter(std::make_unique<VoxelFilter>(cfg.getVoxelParam()));
     src_pipeline.addFilter(std::make_unique<OutlierFilter>(outlier.mean_k, outlier.sd));
     src_pipeline.run(target_cloud, target_filtered);
+    Eigen::Matrix4f global_trans = Eigen::Matrix4f::Identity(); // 全局变换矩阵
     for (size_t i = 1; i < pcd_path.size(); ++i)
     {
         // 第i帧点云下采样
@@ -91,14 +92,14 @@ int main(int argc, char *argv[])
 
         if (fine_reg->FineReg(current_filtered, target_filtered, coarse_trans, final_trans))
         {
-
+            global_trans *= final_trans;
             spdlog::info("第{}帧配准成功", i);
             // std::stringstream ss;
             // ss << final_trans;
             // spdlog::info("最终矩阵为：\n{}", ss.str());
             // 结果导出
             CloudPtr reg_cloud = pcl::make_shared<PointCloud>();
-            pcl::transformPointCloud(*current_cloud, *reg_cloud, final_trans);
+            pcl::transformPointCloud(*current_cloud, *reg_cloud, global_trans);
             *global_map += *reg_cloud;
         }
         else
